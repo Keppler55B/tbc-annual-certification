@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TBC Annual Compliance Training & Certification</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .welcome-section, .module-selection, .video-section, .quiz-section, .result-section, .certificate-section {
+            display: none;
+        }
+
+        .welcome-section.active, .module-selection.active, .video-section.active, .quiz-section.active, .result-section.active, .certificate-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        input[type="text"], input[type="email"], select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus, input[type="email"]:focus, select:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+        }
+
+        /* Hide password manager icons and autofill suggestions */
+        input::-webkit-credentials-auto-fill-button,
+        input::-webkit-strong-password-auto-fill-button,
+        input::-webkit-caps-lock-indicator {
+            display: none !important;
+        }
+
+        /* Hide password manager overlays */
+        input[type="text"]::-webkit-textfield-decoration-container,
+        input[type="email"]::-webkit-textfield-decoration-container {
+            display: none !important;
+        }
+
+        /* Additional cleanup for various password managers */
+        input {
+            background-image: none !important;
+            background-position: initial !important;
+            background-repeat: initial !important;
+            background-attachment: initial !important;
+            background-origin: initial !important;
+            background-clip: initial !important;
+            background-color: white !important;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 14px 35px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(42, 82, 152, 0.4);
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(42, 82, 152, 0.5);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .module-card {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border-color: #2a5298;
+        }
+
+        .module-card.selected {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            border-color: #2a5298;
+            box-shadow: 0 5px 20px rgba(42, 82, 152, 0.3);
+        }
+
+        .module-card.completed {
+            background: linear-gradient(135deg, #d4edda 0%, #e7f5e7 100%);
+            border-color: #28a745;
+        }
+
+        .module-card h3 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .module-card p {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .module-number {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #2a5298;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .module-card.completed .module-number {
+            background: #28a745;
+        }
+
+        .video-container {
+            background: #000;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .video-placeholder {
+            color: white;
+            font-size: 1.2em;
+            line-height: 1.8;
+        }
+
+        .video-iframe {
+            width: 100%;
+            max-width: 800px;
+            height: 450px;
+            border-radius: 8px;
+            border: none;
+        }
+
+        .video-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .video-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .question {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-left: 4px solid #2a5298;
+        }
+
+        .question h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .question .module-tag {
+            display: inline-block;
+            background: #2a5298;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin-bottom: 15px;
+        }
+
+        .options {
+            margin-top: 15px;
+        }
+
+        .option {
+            display: block;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            background: #e3f2fd;
+            border-color: #2a5298;
+            transform: translateX(5px);
+        }
+
+        .option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .progress-tracker {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .progress-tracker h3 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+        }
+
+        .module-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .module-progress:last-child {
+            border-bottom: none;
+        }
+
+        .module-progress .status {
+            font-weight: 600;
+        }
+
+        .module-progress .status.completed {
+            color: #28a745;
+        }
+
+        .module-progress .status.in-progress {
+            color: #ffc107;
+        }
+
+        .module-progress .status.not-started {
+            color: #6c757d;
+        }
+
+        .progress-bar {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            background: linear-gradient(90deg, #1e3c72 0%, #2a5298 100%);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            box-shadow: 0 2px 8px rgba(42, 82, 152, 0.5);
+        }
+
+        .result-content {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .score-display {
+            font-size: 4em;
+            color: #2a5298;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .pass-message {
+            color: #28a745;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .fail-message {
+            color: #dc3545;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .score-breakdown {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .score-breakdown h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .module-score {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .module-score:last-child {
+            border-bottom: none;
+        }
+
+        #certificate {
+            width: 800px;
+            height: 600px;
+            border: 20px solid #f4f4f4;
+            background: white;
+            position: relative;
+            margin: 20px auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .timer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2a5298;
+            display: none;
+            z-index: 1000;
+        }
+
+        .timer.active {
+            display: block;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2a5298;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .info-box h3 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .checkmark {
+            color: #28a745;
+            font-size: 1.2em;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .module-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            #certificate {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 4/3;
+            }
+
+            .video-controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="timer" id="timer">Module Time: <span id="timeDisplay">00:00</span></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>TBC Annual Compliance Training</h1>
+            <p>Complete your mandatory training modules and receive your certification</p>
+        </div>
+        
+        <div class="content">
+            <!-- Welcome Section -->
+            <div class="welcome-section active" id="welcomeSection">
+                <h2>Welcome to TBC Annual Compliance Training</h2>
+                <p style="margin: 20px 0; color: #666; line-height: 1.6;">
+                    This comprehensive training program ensures all employees meet compliance obligations, understand security protocols, and maintain ethical standards. Complete all 9 core modules to receive your annual certification.
+                </p>
+                
+                <div class="info-box">
+                    <h3>Training Requirements:</h3>
+                    <ul>
+                        <li>Complete all 9 core training modules</li>
+                        <li>Watch each training video (5-10 minutes per module)</li>
+                        <li>Pass brief assessments (1-5 questions per module)</li>
+                        <li>Achieve minimum 80% overall score</li>
+                        <li>Estimated total time: 60-90 minutes</li>
+                    </ul>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fullName">Full Name *</label>
+                    <input type="text" id="fullName" placeholder="Enter your full name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" placeholder="Enter your corporate email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="employeeId">Employee ID *</label>
+                    <input type="text" id="employeeId" placeholder="Enter your employee ID" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="department">Department *</label>
+                    <select id="department" required>
+                        <option value="">Select your department</option>
+                        <option value="Human Resources">Human Resources</option>
+                        <option value="Information Technology">Information Technology</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Operations">Operations</option>
+                        <option value="Sales">Sales</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Customer Service">Customer Service</option>
+                        <option value="Administration">Administration</option>
+                        <option value="Legal">Legal</option>
+                        <option value="Research & Development">Research & Development</option>
+                    </select>
+                </div>
+                
+                <button class="btn" onclick="startTrainingProgram()">Begin Training Program</button>
+            </div>
+            
+            <!-- Module Selection Section -->
+            <div class="module-selection" id="moduleSelection">
+                <h2>Training Modules Overview</h2>
+                <p style="margin: 20px 0; color: #666;">Complete all 9 modules in any order. Click on a module to begin.</p>
+                
+                <div class="progress-tracker">
+                    <h3>Overall Progress: <span id="overallProgress">0/9 Modules Complete</span></h3>
+                    <div class="progress-bar">
+                        <div class="progress" id="overallProgressBar" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <div class="module-grid" id="moduleGrid">
+                    <!-- Modules will be inserted here dynamically -->
+                </div>
+                
+                <div style="margin-top: 30px; text-align: center;">
+                    <button class="btn" onclick="viewResults()" id="viewResultsBtn" disabled>View Results & Certificate</button>
+                </div>
+            </div>
+            
+            <!-- Video Section -->
+            <div class="video-section" id="videoSection">
+                <h2 id="videoModuleTitle">Module Title</h2>
+                
+                <div class="video-container">
+                    <div class="video-placeholder">
+                        <p>🎥 Training Video</p>
+                        <p style="margin-top: 20px; font-size: 0.9em; opacity: 0.9;">
+                            This is where your training video would be embedded.<br>
+                            Videos can be hosted on platforms like:<br>
+                            • Vimeo (private/unlisted)<br>
+                            • YouTube (unlisted)<br>
+                            • Your organization's LMS<br>
+                            • Corporate video hosting solution
+                        </p>
+                        <p style="margin-top: 20px; font-size: 1.1em;">
+                            Duration: <span id="videoDuration">5-10 minutes</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="video-info">
+                    <h3>Module Learning Objectives:</h3>
+                    <div id="videoLearningObjectives"></div>
+                </div>
+                
+                <div class="video-controls">
+                    <button class="btn btn-secondary" onclick="backToModules()">Back to Modules</button>
+                    <button class="btn" onclick="proceedToQuiz()" id="proceedToQuizBtn">Continue to Assessment</button>
+                </div>
+                
+                <p style="text-align: center; margin-top: 20px; color: #666;">
+                    Note: You must watch the complete video before proceeding to the assessment.
+                </p>
+            </div>
+            
+            <!-- Quiz Section -->
+            <div class="quiz-section" id="quizSection">
+                <h2 id="quizModuleTitle">Module Assessment</h2>
+                
+                <div class="progress-bar">
+                    <div class="progress" id="quizProgressBar" style="width: 0%"></div>
+                </div>
+                
+                <div id="questionContainer"></div>
+                
+                <button class="btn" onclick="nextQuestion()" id="nextBtn" style="display: none;">Next Question</button>
+                <button class="btn" onclick="submitModuleQuiz()" id="submitBtn" style="display: none;">Submit Assessment</button>
+            </div>
+            
+            <!-- Result Section -->
+            <div class="result-section" id="resultSection">
+                <div class="result-content">
+                    <h2>Training Complete!</h2>
+                    <div class="score-display" id="scoreDisplay">0%</div>
+                    <div id="resultMessage"></div>
+                    <div class="score-breakdown" id="scoreBreakdown"></div>
+                    <button class="btn btn-success" onclick="generateCertificate()" id="certBtn" style="display: none;">Generate Certificate</button>
+                    <button class="btn" onclick="retakeFailedModules()" id="retakeBtn" style="display: none;">Retake Failed Modules</button>
+                </div>
+            </div>
+            
+            <!-- Certificate Section -->
+            <div class="certificate-section" id="certificateSection">
+                <canvas id="certificate" width="800" height="600"></canvas>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn btn-success" onclick="downloadCertificate()">Download Certificate</button>
+                    <button class="btn" onclick="resetApp()" style="margin-left: 10px;">New Training Session</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Core Training Modules Configuration
+        const trainingModules = [
+            {
+                id: 'phishing',
+                number: 1,
+                name: 'Phishing & Social Engineering Detection',
+                description: 'How to recognize and report phishing, scam emails, and suspicious activity',
+                videoUrl: 'https://www.youtube.com/embed/XBkzBrXlle0',
+                videoType: 'youtube',
+                duration: '8 minutes',
+                objectives: [
+                    'Identify common phishing indicators',
+                    'Understand social engineering tactics',
+                    'Learn proper reporting procedures',
+                    'Recognize urgent or threatening language patterns'
+                ],
+                questions: [
+                    {
+                        question: "Which of the following is the MOST reliable indicator of a phishing email?",
+                        options: [
+                            "The email has your company logo",
+                            "Sender's email domain doesn't match the company name",
+                            "The email is marked as important",
+                            "It was sent during business hours"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "You receive an urgent email from 'IT Support' asking you to verify your password. What should you do?",
+                        options: [
+                            "Reply with your password immediately",
+                            "Click the provided link to verify",
+                            "Contact IT directly through official channels",
+                            "Forward it to a colleague"
+                        ],
+                        correct: 2
+                    },
+                    {
+                        question: "Social engineering attacks often use which psychological trigger?",
+                        options: [
+                            "Urgency and fear",
+                            "Complex technical terms",
+                            "Long detailed explanations",
+                            "Multiple attachments"
+                        ],
+                        correct: 0
+                    }
+                ]
+            },
+            {
+                id: 'password',
+                number: 2,
+                name: 'Password Security',
+                description: 'Strong passwords, MFA usage, password manager training',
+                videoUrl: 'https://example.com/videos/password-security',
+                duration: '6 minutes',
+                objectives: [
+                    'Create strong, unique passwords',
+                    'Understand multi-factor authentication (MFA)',
+                    'Use password managers effectively',
+                    'Avoid common password mistakes'
+                ],
+                questions: [
+                    {
+                        question: "What makes a password strong?",
+                        options: [
+                            "Using your birthday with special characters",
+                            "Length of 12+ characters with mixed types",
+                            "Using the same complex password everywhere",
+                            "Writing it down and keeping it safe"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "Multi-factor authentication (MFA) adds security by:",
+                        options: [
+                            "Making passwords longer",
+                            "Requiring something you know AND something you have",
+                            "Encrypting your password",
+                            "Changing your password daily"
+                        ],
+                        correct: 1
+                    }
+                ]
+            },
+            {
+                id: 'data',
+                number: 3,
+                name: 'Data Protection & Privacy',
+                description: 'Proper handling of personal/company data, legal compliance',
+                videoUrl: 'https://example.com/videos/data-protection',
+                duration: '10 minutes',
+                objectives: [
+                    'Understand data classification levels',
+                    'Follow GDPR and privacy regulations',
+                    'Handle sensitive information properly',
+                    'Implement data minimization principles'
+                ],
+                questions: [
+                    {
+                        question: "Under GDPR, you must report a data breach within:",
+                        options: [
+                            "24 hours",
+                            "72 hours",
+                            "1 week",
+                            "1 month"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "Personal data should be collected based on:",
+                        options: [
+                            "Maximum information principle",
+                            "Legitimate purpose and consent",
+                            "Department preference",
+                            "Storage availability"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "Which is NOT a valid reason to process personal data?",
+                        options: [
+                            "Legal obligation",
+                            "Explicit consent",
+                            "Curiosity about the person",
+                            "Legitimate business interest"
+                        ],
+                        correct: 2
+                    }
+                ]
+            },
+            {
+                id: 'incident',
+                number: 4,
+                name: 'Incident Reporting',
+                description: 'Clear steps for quickly reporting security or harassment concerns',
+                videoUrl: 'https://example.com/videos/incident-reporting',
+                duration: '5 minutes',
+                objectives: [
+                    'Recognize reportable incidents',
+                    'Follow proper reporting channels',
+                    'Document incidents correctly',
+                    'Understand escalation procedures'
+                ],
+                questions: [
+                    {
+                        question: "When should you report a potential security incident?",
+                        options: [
+                            "After trying to fix it yourself",
+                            "Immediately upon discovery",
+                            "At the end of the workday",
+                            "Only if data was compromised"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "Proper incident documentation should include:",
+                        options: [
+                            "Only your opinion of what happened",
+                            "Date, time, facts, and actions taken",
+                            "Names of people to blame",
+                            "Speculation about causes"
+                        ],
+                        correct: 1
+                    }
+                ]
+            },
+            {
+                id: 'internet',
+                number: 5,
+                name: 'Safe Internet Practices',
+                description: 'Secure browsing, avoiding unsafe downloads, public network risks',
+                videoUrl: 'https://example.com/videos/safe-internet',
+                duration: '7 minutes',
+                objectives: [
+                    'Identify secure websites (HTTPS)',
+                    'Avoid malicious downloads',
+                    'Use VPN on public networks',
+                    'Recognize unsafe browsing behaviors'
+                ],
+                questions: [
+                    {
+                        question: "When using public WiFi, you should:",
+                        options: [
+                            "Access any website freely",
+                            "Use a VPN for all connections",
+                            "Only check social media",
+                            "Share the password with others"
+                        ],
+                        correct: 1
+                    }
+                ]
+            },
+            {
+                id: 'role',
+                number: 6,
+                name: 'Role-Specific Threat Awareness',
+                description: 'Tailored content for high-risk teams like HR, IT, or Finance',
+                videoUrl: 'https://example.com/videos/role-specific',
+                duration: '8 minutes',
+                objectives: [
+                    'Understand role-specific risks',
+                    'Recognize targeted attacks',
+                    'Follow specialized protocols',
+                    'Implement department best practices'
+                ],
+                questions: [
+                    {
+                        question: "Finance teams are often targeted with:",
+                        options: [
+                            "General spam emails",
+                            "CEO fraud and invoice scams",
+                            "Social media requests",
+                            "Software updates"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "HR departments should be especially cautious of:",
+                        options: [
+                            "Fake job applicant phishing",
+                            "Printer maintenance",
+                            "Office supply orders",
+                            "Meeting requests"
+                        ],
+                        correct: 0
+                    }
+                ]
+            },
+            {
+                id: 'malware',
+                number: 7,
+                name: 'Malware & Virus Prevention',
+                description: 'Spotting malware, avoiding ransomware, safe device use',
+                videoUrl: 'https://example.com/videos/malware-prevention',
+                duration: '9 minutes',
+                objectives: [
+                    'Identify malware symptoms',
+                    'Prevent ransomware attacks',
+                    'Maintain device security',
+                    'Respond to infections properly'
+                ],
+                questions: [
+                    {
+                        question: "The FIRST step when you suspect malware infection is:",
+                        options: [
+                            "Restart the computer",
+                            "Disconnect from the network",
+                            "Delete suspicious files",
+                            "Run multiple antivirus scans"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "Ransomware typically spreads through:",
+                        options: [
+                            "Proper software updates",
+                            "Malicious email attachments",
+                            "Company-approved apps",
+                            "Ethernet cables"
+                        ],
+                        correct: 1
+                    }
+                ]
+            },
+            {
+                id: 'safety',
+                number: 8,
+                name: 'Workplace Safety & Emergency Procedures',
+                description: 'OSHA basics, evacuation, medical & PPE training',
+                videoUrl: 'https://example.com/videos/workplace-safety',
+                duration: '10 minutes',
+                objectives: [
+                    'Follow OSHA guidelines',
+                    'Execute emergency procedures',
+                    'Use PPE correctly',
+                    'Report safety hazards'
+                ],
+                questions: [
+                    {
+                        question: "During a fire alarm, you should:",
+                        options: [
+                            "Finish your urgent task first",
+                            "Evacuate immediately via nearest exit",
+                            "Use elevators for faster exit",
+                            "Gather personal belongings"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "Who is responsible for workplace safety?",
+                        options: [
+                            "Only the safety officer",
+                            "Only management",
+                            "Every employee",
+                            "Only maintenance staff"
+                        ],
+                        correct: 2
+                    },
+                    {
+                        question: "PPE should be inspected:",
+                        options: [
+                            "Once a year",
+                            "Before each use",
+                            "Only when damaged",
+                            "Never"
+                        ],
+                        correct: 1
+                    }
+                ]
+            },
+            {
+                id: 'harassment',
+                number: 9,
+                name: 'Anti-Harassment in the Workplace',
+                description: 'Recognize, denounce, and prevent all forms of harassment including sexual, physical, psychological, and cyberbullying',
+                videoUrl: 'https://example.com/videos/anti-harassment',
+                duration: '12 minutes',
+                objectives: [
+                    'Recognize all forms of harassment',
+                    'Understand reporting procedures and confidentiality',
+                    'Practice bystander intervention',
+                    'Create respectful work environments',
+                    'Know anti-retaliation policies'
+                ],
+                questions: [
+                    {
+                        question: "Workplace harassment includes:",
+                        options: [
+                            "Only physical contact",
+                            "Only verbal abuse",
+                            "Any unwelcome conduct that creates hostile environment",
+                            "Only actions outside of work"
+                        ],
+                        correct: 2
+                    },
+                    {
+                        question: "As a bystander witnessing harassment, you should:",
+                        options: [
+                            "Ignore it as it's not your business",
+                            "Safely intervene or report to HR",
+                            "Join in if others are laughing",
+                            "Wait for the victim to complain first"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "Retaliation against someone who reports harassment is:",
+                        options: [
+                            "Sometimes justified",
+                            "A private matter",
+                            "Strictly prohibited and illegal",
+                            "Up to management discretion"
+                        ],
+                        correct: 2
+                    },
+                    {
+                        question: "Cyberbullying in the workplace includes:",
+                        options: [
+                            "Only direct threats",
+                            "Spreading rumors online, hostile emails, or social media harassment",
+                            "Only physical threats",
+                            "Constructive criticism"
+                        ],
+                        correct: 1
+                    },
+                    {
+                        question: "Creating a respectful workplace is the responsibility of:",
+                        options: [
+                            "Only HR department",
+                            "Only senior management",
+                            "Only team leaders",
+                            "Every employee at all levels"
+                        ],
+                        correct: 3
+                    }
+                ]
+            }
+        ];
+
+        // Global variables
+        let currentModule = null;
+        let currentQuestionIndex = 0;
+        let moduleAnswers = {};
+        let moduleScores = {};
+        let completedModules = [];
+        let startTime;
+        let timerInterval;
+        let userData = {};
+
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        function startTrainingProgram() {
+            const name = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const employeeId = document.getElementById('employeeId').value.trim();
+            const department = document.getElementById('department').value;
+            
+            if (!name || !email || !employeeId || !department) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            if (!validateEmail(email)) {
+                alert('Please enter a valid corporate email address');
+                return;
+            }
+            
+            userData = { name, email, employeeId, department };
+            
+            // Initialize module scores
+            trainingModules.forEach(module => {
+                moduleScores[module.id] = { score: 0, total: 0, completed: false };
+            });
+            
+            document.getElementById('welcomeSection').classList.remove('active');
+            document.getElementById('moduleSelection').classList.add('active');
+            
+            renderModules();
+        }
+
+        function renderModules() {
+            const grid = document.getElementById('moduleGrid');
+            grid.innerHTML = '';
+            
+            trainingModules.forEach(module => {
+                const card = document.createElement('div');
+                card.className = 'module-card';
+                if (completedModules.includes(module.id)) {
+                    card.classList.add('completed');
+                }
+                card.onclick = () => startModule(module.id);
+                card.id = `module-${module.id}`;
+                
+                const status = completedModules.includes(module.id) ? '✓' : module.number;
+                
+                card.innerHTML = `
+                    <div class="module-number">${status}</div>
+                    <h3>${module.name}</h3>
+                    <p>${module.description}</p>
+                    ${completedModules.includes(module.id) ? '<span class="checkmark">✓ Completed</span>' : ''}
+                `;
+                
+                grid.appendChild(card);
+            });
+            
+            updateOverallProgress();
+        }
+
+        function updateOverallProgress() {
+            const completed = completedModules.length;
+            const total = trainingModules.length;
+            const percentage = (completed / total) * 100;
+            
+            document.getElementById('overallProgress').textContent = `${completed}/${total} Modules Complete`;
+            document.getElementById('overallProgressBar').style.width = percentage + '%';
+            
+            const viewResultsBtn = document.getElementById('viewResultsBtn');
+            if (completed === total) {
+                viewResultsBtn.disabled = false;
+                viewResultsBtn.classList.add('btn-success');
+                viewResultsBtn.textContent = 'View Results & Generate Certificate';
+            }
+        }
+
+        function startModule(moduleId) {
+            currentModule = trainingModules.find(m => m.id === moduleId);
+            
+            if (!currentModule) return;
+            
+            // If module already completed, show a message
+            if (completedModules.includes(moduleId)) {
+                if (!confirm(`You have already completed this module. Do you want to review it again?`)) {
+                    return;
+                }
+            }
+            
+            document.getElementById('moduleSelection').classList.remove('active');
+            document.getElementById('videoSection').classList.add('active');
+            
+            // Set up video section
+            document.getElementById('videoModuleTitle').textContent = `Module ${currentModule.number}: ${currentModule.name}`;
+            document.getElementById('videoDuration').textContent = currentModule.duration;
+            
+            // Load video based on type
+            const videoContainer = document.querySelector('.video-container');
+            if (currentModule.videoType === 'youtube' && currentModule.videoUrl) {
+                // Embed YouTube video
+                videoContainer.innerHTML = `
+                    <iframe 
+                        class="video-iframe"
+                        src="${currentModule.videoUrl}?rel=0&modestbranding=1&autoplay=0" 
+                        title="${currentModule.name} Training Video"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                `;
+            } else {
+                // Show placeholder for other modules
+                videoContainer.innerHTML = `
+                    <div class="video-placeholder">
+                        <p>🎥 Training Video</p>
+                        <p style="margin-top: 20px; font-size: 0.9em; opacity: 0.9;">
+                            This is where your training video would be embedded.<br>
+                            Videos can be hosted on platforms like:<br>
+                            • Vimeo (private/unlisted)<br>
+                            • YouTube (unlisted)<br>
+                            • Your organization's LMS<br>
+                            • Corporate video hosting solution
+                        </p>
+                        <p style="margin-top: 20px; font-size: 1.1em;">
+                            Duration: <span>${currentModule.duration}</span>
+                        </p>
+                    </div>
+                `;
+            }
+            
+            // Display learning objectives
+            const objectivesHtml = currentModule.objectives.map(obj => 
+                `<li style="margin: 10px 0; color: #555;">${obj}</li>`
+            ).join('');
+            document.getElementById('videoLearningObjectives').innerHTML = `<ul style="margin-left: 20px;">${objectivesHtml}</ul>`;
+            
+            // Start timer
+            startModuleTimer();
+            
+            // Enable quiz button after video time for YouTube videos, or after delay for placeholders
+            if (currentModule.videoType === 'youtube') {
+                // For YouTube videos, enable after a reasonable viewing time (30 seconds for demo)
+                // In production, you'd want to use YouTube API to detect actual video completion
+                setTimeout(() => {
+                    document.getElementById('proceedToQuizBtn').disabled = false;
+                    document.getElementById('proceedToQuizBtn').classList.add('btn-success');
+                    
+                    // Add note about video completion
+                    const noteElement = document.createElement('p');
+                    noteElement.style.cssText = 'text-align: center; margin-top: 10px; color: #28a745; font-weight: 600;';
+                    noteElement.textContent = '✓ Video watched - You may now proceed to the assessment';
+                    document.querySelector('.video-controls').insertBefore(noteElement, document.querySelector('.video-controls').firstChild);
+                }, 30000); // 30 seconds for demo - adjust based on actual video length
+            } else {
+                // For placeholder videos, enable after 3 seconds
+                setTimeout(() => {
+                    document.getElementById('proceedToQuizBtn').disabled = false;
+                    document.getElementById('proceedToQuizBtn').classList.add('btn-success');
+                }, 3000);
+            }
+        }
+
+        function startModuleTimer() {
+            startTime = Date.now();
+            document.getElementById('timer').classList.add('active');
+            
+            if (timerInterval) clearInterval(timerInterval);
+            
+            timerInterval = setInterval(() => {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                document.getElementById('timeDisplay').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function backToModules() {
+            if (timerInterval) clearInterval(timerInterval);
+            document.getElementById('timer').classList.remove('active');
+            
+            document.getElementById('videoSection').classList.remove('active');
+            document.getElementById('moduleSelection').classList.add('active');
+            
+            // Reset quiz button
+            document.getElementById('proceedToQuizBtn').disabled = true;
+            document.getElementById('proceedToQuizBtn').classList.remove('btn-success');
+        }
+
+        function proceedToQuiz() {
+            document.getElementById('videoSection').classList.remove('active');
+            document.getElementById('quizSection').classList.add('active');
+            
+            document.getElementById('quizModuleTitle').textContent = 
+                `Module ${currentModule.number}: ${currentModule.name} - Assessment`;
+            
+            // Reset quiz state
+            currentQuestionIndex = 0;
+            moduleAnswers[currentModule.id] = [];
+            
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = currentModule.questions[currentQuestionIndex];
+            const container = document.getElementById('questionContainer');
+            
+            const progressPercentage = ((currentQuestionIndex + 1) / currentModule.questions.length) * 100;
+            document.getElementById('quizProgressBar').style.width = progressPercentage + '%';
+            
+            let html = `
+                <div class="question">
+                    <span class="module-tag">Module ${currentModule.number}: ${currentModule.name}</span>
+                    <h3>Question ${currentQuestionIndex + 1} of ${currentModule.questions.length}</h3>
+                    <p style="font-size: 1.1em; margin: 20px 0;">${question.question}</p>
+                    <div class="options">
+            `;
+            
+            question.options.forEach((option, index) => {
+                html += `
+                    <label class="option">
+                        <input type="radio" name="q${currentQuestionIndex}" value="${index}" onchange="selectAnswer(${index})">
+                        ${option}
+                    </label>
+                `;
+            });
+            
+            html += `</div></div>`;
+            container.innerHTML = html;
+            
+            document.getElementById('nextBtn').style.display = 'none';
+            document.getElementById('submitBtn').style.display = 'none';
+        }
+
+        function selectAnswer(answer) {
+            moduleAnswers[currentModule.id][currentQuestionIndex] = answer;
+            
+            if (currentQuestionIndex < currentModule.questions.length - 1) {
+                document.getElementById('nextBtn').style.display = 'inline-block';
+            } else {
+                document.getElementById('submitBtn').style.display = 'inline-block';
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            showQuestion();
+        }
+
+        function submitModuleQuiz() {
+            // Calculate module score
+            let correct = 0;
+            currentModule.questions.forEach((question, index) => {
+                if (moduleAnswers[currentModule.id][index] === question.correct) {
+                    correct++;
+                }
+            });
+            
+            const total = currentModule.questions.length;
+            const percentage = Math.round((correct / total) * 100);
+            
+            // Store module score
+            moduleScores[currentModule.id] = {
+                score: correct,
+                total: total,
+                percentage: percentage,
+                completed: true
+            };
+            
+            // Mark module as completed
+            if (!completedModules.includes(currentModule.id)) {
+                completedModules.push(currentModule.id);
+            }
+            
+            // Stop timer
+            if (timerInterval) clearInterval(timerInterval);
+            document.getElementById('timer').classList.remove('active');
+            
+            // Show module result
+            alert(`Module Complete!\n\nScore: ${percentage}%\n${correct} out of ${total} questions correct\n\n${percentage >= 80 ? 'Passed!' : 'Please review this module again.'}`);
+            
+            // Return to module selection
+            document.getElementById('quizSection').classList.remove('active');
+            document.getElementById('moduleSelection').classList.add('active');
+            
+            renderModules();
+        }
+
+        function viewResults() {
+            // Calculate overall score
+            let totalCorrect = 0;
+            let totalQuestions = 0;
+            
+            Object.values(moduleScores).forEach(score => {
+                totalCorrect += score.score;
+                totalQuestions += score.total;
+            });
+            
+            const overallPercentage = Math.round((totalCorrect / totalQuestions) * 100);
+            
+            document.getElementById('moduleSelection').classList.remove('active');
+            document.getElementById('resultSection').classList.add('active');
+            
+            document.getElementById('scoreDisplay').textContent = overallPercentage + '%';
+            
+            // Generate score breakdown
+            let breakdownHtml = '<h3>Module Scores:</h3>';
+            trainingModules.forEach(module => {
+                const score = moduleScores[module.id];
+                const status = score.percentage >= 80 ? '✓ Pass' : '✗ Fail';
+                const color = score.percentage >= 80 ? '#28a745' : '#dc3545';
+                
+                breakdownHtml += `
+                    <div class="module-score">
+                        <span>${module.name}</span>
+                        <span style="color: ${color}; font-weight: bold;">
+                            ${score.percentage}% ${status}
+                        </span>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('scoreBreakdown').innerHTML = breakdownHtml;
+            
+            // Determine pass/fail
+            const resultMessage = document.getElementById('resultMessage');
+            const certBtn = document.getElementById('certBtn');
+            const retakeBtn = document.getElementById('retakeBtn');
+            
+            if (overallPercentage >= 80) {
+                resultMessage.innerHTML = `
+                    <div class="pass-message">
+                        Congratulations! You have successfully completed the TBC Annual Compliance Training.
+                    </div>
+                `;
+                certBtn.style.display = 'inline-block';
+                retakeBtn.style.display = 'none';
+            } else {
+                resultMessage.innerHTML = `
+                    <div class="fail-message">
+                        You need 80% to pass. Please retake the failed modules.
+                    </div>
+                `;
+                certBtn.style.display = 'none';
+                retakeBtn.style.display = 'inline-block';
+            }
+        }
+
+        function retakeFailedModules() {
+            // Reset failed modules
+            Object.keys(moduleScores).forEach(moduleId => {
+                if (moduleScores[moduleId].percentage < 80) {
+                    const index = completedModules.indexOf(moduleId);
+                    if (index > -1) {
+                        completedModules.splice(index, 1);
+                    }
+                    moduleScores[moduleId].completed = false;
+                }
+            });
+            
+            document.getElementById('resultSection').classList.remove('active');
+            document.getElementById('moduleSelection').classList.add('active');
+            renderModules();
+        }
+
+        function generateCertificate() {
+            document.getElementById('resultSection').classList.remove('active');
+            document.getElementById('certificateSection').classList.add('active');
+            
+            const canvas = document.getElementById('certificate');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#ffffff');
+            gradient.addColorStop(1, '#f8f9fa');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Border
+            ctx.strokeStyle = '#1e3c72';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+            
+            // Inner border
+            ctx.strokeStyle = '#2a5298';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(30, 30, canvas.width - 60, canvas.height - 60);
+            
+            // Logo/Header area
+            ctx.fillStyle = '#1e3c72';
+            ctx.font = 'bold 42px Georgia';
+            ctx.textAlign = 'center';
+            ctx.fillText('Certificate of Completion', canvas.width / 2, 100);
+            
+            // Subtitle
+            ctx.font = '20px Arial';
+            ctx.fillStyle = '#2a5298';
+            ctx.fillText('TBC Annual Compliance Training', canvas.width / 2, 130);
+            
+            // Certification statement
+            ctx.font = '16px Arial';
+            ctx.fillStyle = '#333';
+            ctx.fillText('This certifies that', canvas.width / 2, 200);
+            
+            // Employee name
+            ctx.font = 'bold 32px Georgia';
+            ctx.fillStyle = '#1e3c72';
+            ctx.fillText(userData.name, canvas.width / 2, 250);
+            
+            // Underline
+            ctx.strokeStyle = '#2a5298';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(150, 265);
+            ctx.lineTo(650, 265);
+            ctx.stroke();
+            
+            // Employee details
+            ctx.font = '14px Arial';
+            ctx.fillStyle = '#555';
+            ctx.fillText(`Employee ID: ${userData.employeeId} | Department: ${userData.department}`, canvas.width / 2, 300);
+            
+            // Completion text
+            ctx.font = '16px Arial';
+            ctx.fillStyle = '#333';
+            ctx.fillText('has successfully completed all required compliance training modules', canvas.width / 2, 340);
+            ctx.fillText('and demonstrated proficiency in:', canvas.width / 2, 365);
+            
+            // Module list (in two columns)
+            ctx.font = '12px Arial';
+            ctx.fillStyle = '#555';
+            ctx.textAlign = 'left';
+            
+            const leftModules = trainingModules.slice(0, 5);
+            const rightModules = trainingModules.slice(5);
+            
+            let yPos = 395;
+            leftModules.forEach(module => {
+                ctx.fillText(`• ${module.name}`, 150, yPos);
+                yPos += 20;
+            });
+            
+            yPos = 395;
+            rightModules.forEach(module => {
+                ctx.fillText(`• ${module.name}`, 420, yPos);
+                yPos += 20;
+            });
+            
+            // Date and validity
+            ctx.textAlign = 'center';
+            ctx.font = '14px Arial';
+            ctx.fillStyle = '#333';
+            const today = new Date();
+            const expiry = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate());
+            ctx.fillText(`Date Issued: ${today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`, canvas.width / 2, 510);
+            ctx.fillText(`Valid Until: ${expiry.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`, canvas.width / 2, 530);
+            
+            // Signature lines
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 1;
+            
+            // Left signature
+            ctx.beginPath();
+            ctx.moveTo(150, 560);
+            ctx.lineTo(350, 560);
+            ctx.stroke();
+            ctx.font = '12px Arial';
+            ctx.fillStyle = '#666';
+            ctx.fillText('Chief Compliance Officer', 250, 575);
+            
+            // Right signature
+            ctx.beginPath();
+            ctx.moveTo(450, 560);
+            ctx.lineTo(650, 560);
+            ctx.stroke();
+            ctx.fillText('Human Resources Director', 550, 575);
+            
+            // Certificate ID
+            const certId = 'TBC-' + userData.employeeId + '-' + today.getFullYear() + '-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+            ctx.font = '10px Arial';
+            ctx.fillStyle = '#999';
+            ctx.fillText(`Certificate ID: ${certId}`, canvas.width / 2, 590);
+        }
+
+        function downloadCertificate() {
+            const canvas = document.getElementById('certificate');
+            const link = document.createElement('a');
+            const date = new Date().toISOString().split('T')[0];
+            link.download = `TBC_Compliance_Certificate_${userData.name.replace(/\s+/g, '_')}_${date}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        function resetApp() {
+            // Reset all data
+            currentModule = null;
+            currentQuestionIndex = 0;
+            moduleAnswers = {};
+            moduleScores = {};
+            completedModules = [];
+            userData = {};
+            
+            if (timerInterval) clearInterval(timerInterval);
+            
+            // Clear form
+            document.getElementById('fullName').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('employeeId').value = '';
+            document.getElementById('department').value = '';
+            
+            // Return to welcome
+            document.getElementById('certificateSection').classList.remove('active');
+            document.getElementById('welcomeSection').classList.add('active');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "name": "tbc-compliance-training",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  "start": "live-server frontend --port=3000",
+  "test": "echo \"Error: no test specified\" && exit 1"
+}
+}
