@@ -659,460 +659,13 @@
     </div>
 
     <script>
-        // Core Training Modules Configuration
-        const trainingModules = [
-            {
-                id: 'phishing',
-                number: 1,
-                name: 'Phishing & Social Engineering Detection',
-                description: 'How to recognize and report phishing, scam emails, and suspicious activity',
-                videoUrl: 'https://www.youtube.com/embed/WNVTGTrWcvw?start=36',
-                videoType: 'youtube',
-                duration: '10 minutes',
-                objectives: [
-                    'Identify common phishing indicators and red flags',
-                    'Understand social engineering tactics and manipulation techniques',
-                    'Learn proper reporting procedures for suspicious emails',
-                    'Recognize urgent or threatening language patterns',
-                    'Understand the financial and security impact of phishing attacks',
-                    'Practice safe email and link handling procedures'
-                ],
-                questions: [
-                    {
-                        question: "Which of the following is the MOST reliable indicator of a phishing email?",
-                        options: [
-                            "The email has your company logo",
-                            "Sender's email domain doesn't match the company name",
-                            "The email is marked as important",
-                            "It was sent during business hours"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "You receive an urgent email from 'IT Support' asking you to verify your password immediately. What should you do FIRST?",
-                        options: [
-                            "Reply with your password immediately to avoid account suspension",
-                            "Click the provided link to verify your credentials",
-                            "Contact IT directly through official channels to verify the request",
-                            "Forward the email to a colleague for their opinion"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "Social engineering attacks often exploit which psychological triggers?",
-                        options: [
-                            "Urgency, fear, and authority",
-                            "Complex technical jargon only",
-                            "Long detailed explanations",
-                            "Multiple file attachments"
-                        ],
-                        correct: 0
-                    },
-                    {
-                        question: "What should you do if you accidentally click on a suspicious link in an email?",
-                        options: [
-                            "Continue browsing to see what happens",
-                            "Immediately disconnect from the network and report to IT",
-                            "Delete the email and pretend it never happened",
-                            "Share the link with colleagues to warn them"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Which of these email characteristics is LEAST likely to indicate a phishing attempt?",
-                        options: [
-                            "Generic greeting like 'Dear Customer'",
-                            "Urgent language demanding immediate action",
-                            "Email sent during normal business hours",
-                            "Suspicious attachments or links"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "Spear phishing differs from regular phishing because it:",
-                        options: [
-                            "Uses more colorful graphics",
-                            "Targets specific individuals with personalized information",
-                            "Only happens on weekends",
-                            "Always includes malware attachments"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Before entering sensitive information on a website, you should always check for:",
-                        options: [
-                            "Bright colors and animations",
-                            "HTTPS encryption (lock icon) and correct URL spelling",
-                            "Pop-up advertisements",
-                            "Social media sharing buttons"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "If you receive an email claiming to be from your bank asking for account verification, you should:",
-                        options: [
-                            "Provide the information immediately to avoid account closure",
-                            "Call the bank directly using the number on your bank card or statement",
-                            "Reply to the email asking for more details",
-                            "Forward it to friends to see if they got the same email"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Which of the following is a common sign that an email attachment might be malicious?",
-                        options: [
-                            "It's a PDF document",
-                            "It has an unusual file extension like .exe, .scr, or double extensions",
-                            "It's larger than 1MB in size",
-                            "It was sent during business hours"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "The best defense against phishing attacks includes:",
-                        options: [
-                            "Only using Internet Explorer browser",
-                            "Employee training, email filters, and verification procedures",
-                            "Avoiding all email communication",
-                            "Using only company computers for personal email"
-                        ],
-                        correct: 1
-                    }
-                ]
-            },
-            {
-                id: 'password',
-                number: 2,
-                name: 'Password Security',
-                description: 'Strong passwords, MFA usage, password manager training',
-                videoUrl: 'https://example.com/videos/password-security',
-                duration: '6 minutes',
-                objectives: [
-                    'Create strong, unique passwords',
-                    'Understand multi-factor authentication (MFA)',
-                    'Use password managers effectively',
-                    'Avoid common password mistakes'
-                ],
-                questions: [
-                    {
-                        question: "What makes a password strong?",
-                        options: [
-                            "Using your birthday with special characters",
-                            "Length of 12+ characters with mixed types",
-                            "Using the same complex password everywhere",
-                            "Writing it down and keeping it safe"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Multi-factor authentication (MFA) adds security by:",
-                        options: [
-                            "Making passwords longer",
-                            "Requiring something you know AND something you have",
-                            "Encrypting your password",
-                            "Changing your password daily"
-                        ],
-                        correct: 1
-                    }
-                ]
-            },
-            {
-                id: 'data',
-                number: 3,
-                name: 'Data Protection & Privacy',
-                description: 'Proper handling of personal/company data, legal compliance',
-                videoUrl: 'https://example.com/videos/data-protection',
-                duration: '10 minutes',
-                objectives: [
-                    'Understand data classification levels',
-                    'Follow GDPR and privacy regulations',
-                    'Handle sensitive information properly',
-                    'Implement data minimization principles'
-                ],
-                questions: [
-                    {
-                        question: "Under GDPR, you must report a data breach within:",
-                        options: [
-                            "24 hours",
-                            "72 hours",
-                            "1 week",
-                            "1 month"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Personal data should be collected based on:",
-                        options: [
-                            "Maximum information principle",
-                            "Legitimate purpose and consent",
-                            "Department preference",
-                            "Storage availability"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Which is NOT a valid reason to process personal data?",
-                        options: [
-                            "Legal obligation",
-                            "Explicit consent",
-                            "Curiosity about the person",
-                            "Legitimate business interest"
-                        ],
-                        correct: 2
-                    }
-                ]
-            },
-            {
-                id: 'incident',
-                number: 4,
-                name: 'Incident Reporting',
-                description: 'Clear steps for quickly reporting security or harassment concerns',
-                videoUrl: 'https://example.com/videos/incident-reporting',
-                duration: '5 minutes',
-                objectives: [
-                    'Recognize reportable incidents',
-                    'Follow proper reporting channels',
-                    'Document incidents correctly',
-                    'Understand escalation procedures'
-                ],
-                questions: [
-                    {
-                        question: "When should you report a potential security incident?",
-                        options: [
-                            "After trying to fix it yourself",
-                            "Immediately upon discovery",
-                            "At the end of the workday",
-                            "Only if data was compromised"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Proper incident documentation should include:",
-                        options: [
-                            "Only your opinion of what happened",
-                            "Date, time, facts, and actions taken",
-                            "Names of people to blame",
-                            "Speculation about causes"
-                        ],
-                        correct: 1
-                    }
-                ]
-            },
-            {
-                id: 'internet',
-                number: 5,
-                name: 'Safe Internet Practices',
-                description: 'Secure browsing, avoiding unsafe downloads, public network risks',
-                videoUrl: 'https://example.com/videos/safe-internet',
-                duration: '7 minutes',
-                objectives: [
-                    'Identify secure websites (HTTPS)',
-                    'Avoid malicious downloads',
-                    'Use VPN on public networks',
-                    'Recognize unsafe browsing behaviors'
-                ],
-                questions: [
-                    {
-                        question: "When using public WiFi, you should:",
-                        options: [
-                            "Access any website freely",
-                            "Use a VPN for all connections",
-                            "Only check social media",
-                            "Share the password with others"
-                        ],
-                        correct: 1
-                    }
-                ]
-            },
-            {
-                id: 'role',
-                number: 6,
-                name: 'Role-Specific Threat Awareness',
-                description: 'Tailored content for high-risk teams like HR, IT, or Finance',
-                videoUrl: 'https://example.com/videos/role-specific',
-                duration: '8 minutes',
-                objectives: [
-                    'Understand role-specific risks',
-                    'Recognize targeted attacks',
-                    'Follow specialized protocols',
-                    'Implement department best practices'
-                ],
-                questions: [
-                    {
-                        question: "Finance teams are often targeted with:",
-                        options: [
-                            "General spam emails",
-                            "CEO fraud and invoice scams",
-                            "Social media requests",
-                            "Software updates"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "HR departments should be especially cautious of:",
-                        options: [
-                            "Fake job applicant phishing",
-                            "Printer maintenance",
-                            "Office supply orders",
-                            "Meeting requests"
-                        ],
-                        correct: 0
-                    }
-                ]
-            },
-            {
-                id: 'malware',
-                number: 7,
-                name: 'Malware & Virus Prevention',
-                description: 'Spotting malware, avoiding ransomware, safe device use',
-                videoUrl: 'https://example.com/videos/malware-prevention',
-                duration: '9 minutes',
-                objectives: [
-                    'Identify malware symptoms',
-                    'Prevent ransomware attacks',
-                    'Maintain device security',
-                    'Respond to infections properly'
-                ],
-                questions: [
-                    {
-                        question: "The FIRST step when you suspect malware infection is:",
-                        options: [
-                            "Restart the computer",
-                            "Disconnect from the network",
-                            "Delete suspicious files",
-                            "Run multiple antivirus scans"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Ransomware typically spreads through:",
-                        options: [
-                            "Proper software updates",
-                            "Malicious email attachments",
-                            "Company-approved apps",
-                            "Ethernet cables"
-                        ],
-                        correct: 1
-                    }
-                ]
-            },
-            {
-                id: 'safety',
-                number: 8,
-                name: 'Workplace Safety & Emergency Procedures',
-                description: 'OSHA basics, evacuation, medical & PPE training',
-                videoUrl: 'https://example.com/videos/workplace-safety',
-                duration: '10 minutes',
-                objectives: [
-                    'Follow OSHA guidelines',
-                    'Execute emergency procedures',
-                    'Use PPE correctly',
-                    'Report safety hazards'
-                ],
-                questions: [
-                    {
-                        question: "During a fire alarm, you should:",
-                        options: [
-                            "Finish your urgent task first",
-                            "Evacuate immediately via nearest exit",
-                            "Use elevators for faster exit",
-                            "Gather personal belongings"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Who is responsible for workplace safety?",
-                        options: [
-                            "Only the safety officer",
-                            "Only management",
-                            "Every employee",
-                            "Only maintenance staff"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "PPE should be inspected:",
-                        options: [
-                            "Once a year",
-                            "Before each use",
-                            "Only when damaged",
-                            "Never"
-                        ],
-                        correct: 1
-                    }
-                ]
-            },
-            {
-                id: 'harassment',
-                number: 9,
-                name: 'Anti-Harassment in the Workplace',
-                description: 'Recognize, denounce, and prevent all forms of harassment including sexual, physical, psychological, and cyberbullying',
-                videoUrl: 'https://www.dol.gov/agencies/eta/apprenticeship/eeo/harassment/video',
-                videoType: 'external',
-                duration: '12 minutes',
-                objectives: [
-                    'Recognize all forms of harassment',
-                    'Understand reporting procedures and confidentiality',
-                    'Practice bystander intervention',
-                    'Create respectful work environments',
-                    'Know anti-retaliation policies'
-                ],
-                questions: [
-                    {
-                        question: "Workplace harassment includes:",
-                        options: [
-                            "Only physical contact",
-                            "Only verbal abuse",
-                            "Any unwelcome conduct that creates hostile environment",
-                            "Only actions outside of work"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "As a bystander witnessing harassment, you should:",
-                        options: [
-                            "Ignore it as it's not your business",
-                            "Safely intervene or report to HR",
-                            "Join in if others are laughing",
-                            "Wait for the victim to complain first"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Retaliation against someone who reports harassment is:",
-                        options: [
-                            "Sometimes justified",
-                            "A private matter",
-                            "Strictly prohibited and illegal",
-                            "Up to management discretion"
-                        ],
-                        correct: 2
-                    },
-                    {
-                        question: "Cyberbullying in the workplace includes:",
-                        options: [
-                            "Only direct threats",
-                            "Spreading rumors online, hostile emails, or social media harassment",
-                            "Only physical threats",
-                            "Constructive criticism"
-                        ],
-                        correct: 1
-                    },
-                    {
-                        question: "Creating a respectful workplace is the responsibility of:",
-                        options: [
-                            "Only HR department",
-                            "Only senior management",
-                            "Only team leaders",
-                            "Every employee at all levels"
-                        ],
-                        correct: 3
-                    }
-                ]
-            }
-        ];
-
+        // API Configuration
+        const API_BASE_URL = window.location.origin + '/api';
+        
         // Global variables
+        let currentUser = null;
+        let userModules = [];
+        let trainingModules = [];
         let currentModule = null;
         let currentQuestionIndex = 0;
         let moduleAnswers = {};
@@ -1122,12 +675,40 @@
         let timerInterval;
         let userData = {};
 
+        // API Helper Functions
+        async function apiCall(endpoint, method = 'GET', data = null) {
+            try {
+                const options = {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                };
+                
+                if (data) {
+                    options.body = JSON.stringify(data);
+                }
+                
+                const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.message || 'API request failed');
+                }
+                
+                return result;
+            } catch (error) {
+                console.error('API Error:', error);
+                throw error;
+            }
+        }
+
         function validateEmail(email) {
             const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return re.test(email);
         }
 
-        function startTrainingProgram() {
+        async function startTrainingProgram() {
             const name = document.getElementById('fullName').value.trim();
             const email = document.getElementById('email').value.trim();
             const employeeId = document.getElementById('employeeId').value.trim();
@@ -1145,15 +726,63 @@
             
             userData = { name, email, employeeId, department };
             
-            // Initialize module scores
-            trainingModules.forEach(module => {
-                moduleScores[module.id] = { score: 0, total: 0, completed: false };
-            });
-            
-            document.getElementById('welcomeSection').classList.remove('active');
-            document.getElementById('moduleSelection').classList.add('active');
-            
-            renderModules();
+            try {
+                // Authenticate user and get assigned modules
+                const authResponse = await apiCall('/auth/login', 'POST', userData);
+                
+                if (authResponse.success) {
+                    currentUser = authResponse.user;
+                    
+                    // Load user-specific modules
+                    const modulesResponse = await apiCall(`/modules/${employeeId}`);
+                    
+                    if (modulesResponse.success) {
+                        trainingModules = modulesResponse.modules;
+                        
+                        // Show special message for Timothy Young
+                        if (modulesResponse.specialUser) {
+                            alert(`Welcome ${name}!\n\n${modulesResponse.specialUser}\n\nYou have been assigned ${modulesResponse.totalModules} specialized training modules.`);
+                        }
+                        
+                        // Initialize module scores based on user's assigned modules
+                        trainingModules.forEach(module => {
+                            moduleScores[module.id] = { score: 0, total: 0, completed: false };
+                        });
+                        
+                        // Load existing progress if user has completed modules before
+                        if (currentUser.assignedModules && currentUser.assignedModules.length > 0) {
+                            currentUser.assignedModules.forEach(userModule => {
+                                if (userModule.completed) {
+                                    completedModules.push(userModule.moduleId);
+                                    moduleScores[userModule.moduleId] = {
+                                        score: userModule.score,
+                                        total: userModule.totalQuestions,
+                                        percentage: userModule.percentage,
+                                        completed: true
+                                    };
+                                }
+                            });
+                        }
+                        
+                        // Update welcome message based on assigned modules
+                        const moduleCount = trainingModules.length;
+                        document.querySelector('#moduleSelection p').textContent = 
+                            `Complete all ${moduleCount} modules in any order. Click on a module to begin.`;
+                        
+                        document.getElementById('welcomeSection').classList.remove('active');
+                        document.getElementById('moduleSelection').classList.add('active');
+                        
+                        renderModules();
+                    } else {
+                        throw new Error('Failed to load training modules');
+                    }
+                } else {
+                    throw new Error('Authentication failed');
+                }
+            } catch (error) {
+                console.error('Training program initialization error:', error);
+                alert(`Error starting training program: ${error.message}\n\nPlease try again or contact support if the problem persists.`);
+            }
         }
 
         function renderModules() {
