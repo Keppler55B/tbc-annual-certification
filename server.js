@@ -6,6 +6,10 @@ require('dotenv').config();
 
 const app = express();
 
+// In-memory storage for development (when MongoDB is not available)
+let inMemoryUsers = new Map();
+let mongodbAvailable = false;
+
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -60,24 +64,84 @@ const connectDB = async () => {
         await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/tbc-compliance', {
             useNewUrlParser: true,
             useUnifiedTopology: true,
+            serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
         });
         console.log('MongoDB connected successfully');
+        mongodbAvailable = true;
     } catch (error) {
-        console.error('MongoDB connection error:', error);
-        console.log('Retrying connection in 5 seconds...');
-        setTimeout(connectDB, 5000);
+        console.error('MongoDB connection failed, using in-memory storage for development');
+        mongodbAvailable = false;
+        // Don't retry immediately, just use in-memory storage
     }
 };
 
 // Handle MongoDB connection events
+mongoose.connection.on('connected', () => {
+    console.log('MongoDB connected');
+    mongodbAvailable = true;
+});
+
 mongoose.connection.on('error', (error) => {
     console.error('MongoDB connection error:', error);
+    mongodbAvailable = false;
 });
 
 mongoose.connection.on('disconnected', () => {
-    console.log('MongoDB disconnected. Attempting to reconnect...');
-    setTimeout(connectDB, 5000);
+    console.log('MongoDB disconnected, switching to in-memory storage');
+    mongodbAvailable = false;
 });
+
+// In-memory storage helper functions
+const createInMemoryUser = (userData) => {
+    const userId = Date.now().toString();
+    const user = {
+        _id: userId,
+        ...userData,
+        assignedModules: [],
+        overallScore: 0,
+        overallPercentage: 0,
+        trainingCompleted: false,
+        certificateGenerated: false,
+        lastLogin: new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date()
+    };
+    
+    // Initialize modules based on employee ID
+    const User = require('./backend/models/User');
+    const userModules = User.getUserModules(userData.employeeId);
+    user.assignedModules = userModules.map(module => ({
+        moduleId: module.moduleId,
+        moduleName: module.moduleName,
+        completed: false,
+        score: 0,
+        totalQuestions: 0,
+        percentage: 0
+    }));
+    
+    inMemoryUsers.set(userData.employeeId, user);
+    return user;
+};
+
+const findInMemoryUser = (employeeId) => {
+    return inMemoryUsers.get(employeeId) || null;
+};
+
+const updateInMemoryUser = (employeeId, updates) => {
+    const user = inMemoryUsers.get(employeeId);
+    if (user) {
+        Object.assign(user, updates, { updatedAt: new Date() });
+        inMemoryUsers.set(employeeId, user);
+        return user;
+    }
+    return null;
+};
+
+// Export helper functions for routes to use
+global.mongodbAvailable = () => mongodbAvailable;
+global.createInMemoryUser = createInMemoryUser;
+global.findInMemoryUser = findInMemoryUser;
+global.updateInMemoryUser = updateInMemoryUser;
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (reason, promise) => {

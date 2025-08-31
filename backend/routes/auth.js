@@ -24,39 +24,72 @@ router.post('/login', [
 
         const { fullName, email, employeeId, department } = req.body;
 
-        // Check if user exists
-        let user = await User.findOne({ employeeId });
+        let user;
 
-        if (user) {
-            // Update user information and last login
-            user.fullName = fullName;
-            user.email = email;
-            user.department = department;
-            user.lastLogin = new Date();
-            
-            // Check and update admin status
-            const isAdminUser = User.isAdminUser(employeeId);
-            user.isAdmin = isAdminUser;
-            user.adminLevel = isAdminUser ? 'full' : 'none';
-            
-            await user.save();
+        // Check if MongoDB is available
+        if (global.mongodbAvailable && global.mongodbAvailable()) {
+            // Use MongoDB
+            user = await User.findOne({ employeeId });
+
+            if (user) {
+                // Update user information and last login
+                user.fullName = fullName;
+                user.email = email;
+                user.department = department;
+                user.lastLogin = new Date();
+                
+                // Check and update admin status
+                const isAdminUser = User.isAdminUser(employeeId);
+                user.isAdmin = isAdminUser;
+                user.adminLevel = isAdminUser ? 'full' : 'none';
+                
+                await user.save();
+            } else {
+                // Check if user is admin
+                const isAdminUser = User.isAdminUser(employeeId);
+                
+                // Create new user
+                user = new User({
+                    fullName,
+                    email,
+                    employeeId,
+                    department,
+                    lastLogin: new Date(),
+                    isAdmin: isAdminUser,
+                    adminLevel: isAdminUser ? 'full' : 'none'
+                });
+
+                // Initialize modules based on employee ID
+                await user.initializeModules();
+            }
         } else {
-            // Check if user is admin
-            const isAdminUser = User.isAdminUser(employeeId);
+            // Use in-memory storage
+            user = global.findInMemoryUser(employeeId);
             
-            // Create new user
-            user = new User({
-                fullName,
-                email,
-                employeeId,
-                department,
-                lastLogin: new Date(),
-                isAdmin: isAdminUser,
-                adminLevel: isAdminUser ? 'full' : 'none'
-            });
-
-            // Initialize modules based on employee ID
-            await user.initializeModules();
+            if (user) {
+                // Update existing user
+                const isAdminUser = User.isAdminUser(employeeId);
+                global.updateInMemoryUser(employeeId, {
+                    fullName,
+                    email,
+                    department,
+                    lastLogin: new Date(),
+                    isAdmin: isAdminUser,
+                    adminLevel: isAdminUser ? 'full' : 'none'
+                });
+                user = global.findInMemoryUser(employeeId);
+            } else {
+                // Create new user in memory
+                const isAdminUser = User.isAdminUser(employeeId);
+                user = global.createInMemoryUser({
+                    fullName,
+                    email,
+                    employeeId,
+                    department,
+                    isAdmin: isAdminUser,
+                    adminLevel: isAdminUser ? 'full' : 'none'
+                });
+            }
         }
 
         // Return user data with assigned modules
@@ -94,8 +127,14 @@ router.post('/login', [
 router.get('/user/:employeeId', async (req, res) => {
     try {
         const { employeeId } = req.params;
+        let user;
         
-        const user = await User.findOne({ employeeId });
+        // Check if MongoDB is available
+        if (global.mongodbAvailable && global.mongodbAvailable()) {
+            user = await User.findOne({ employeeId });
+        } else {
+            user = global.findInMemoryUser(employeeId);
+        }
         
         if (!user) {
             return res.status(404).json({ 
