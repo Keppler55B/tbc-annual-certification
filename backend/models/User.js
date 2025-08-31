@@ -82,14 +82,71 @@ const userSchema = new mongoose.Schema({
     },
     lastLogin: {
         type: Date
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
+    },
+    adminLevel: {
+        type: String,
+        enum: ['none', 'full'],
+        default: 'none'
     }
 }, {
     timestamps: true
 });
 
+// Static method to check if user is admin
+userSchema.statics.isAdminUser = function(employeeId) {
+    const adminEmployeeIds = ['969631', '969632', '969634']; // Cornelius, Fatima, Mary
+    return adminEmployeeIds.includes(employeeId);
+};
+
 // Static method to get user-specific modules
 userSchema.statics.getUserModules = function(employeeId) {
-    // Special case for Timothy Young (Employee ID 969633)
+    // Admin users get all modules
+    if (this.isAdminUser(employeeId)) {
+        return [
+            {
+                moduleId: 'phishing',
+                moduleName: 'Phishing & Social Engineering Detection'
+            },
+            {
+                moduleId: 'password',
+                moduleName: 'Password Security'
+            },
+            {
+                moduleId: 'data',
+                moduleName: 'Data Protection & Privacy'
+            },
+            {
+                moduleId: 'incident',
+                moduleName: 'Incident Reporting'
+            },
+            {
+                moduleId: 'internet',
+                moduleName: 'Safe Internet Practices'
+            },
+            {
+                moduleId: 'role',
+                moduleName: 'Role-Specific Threat Awareness'
+            },
+            {
+                moduleId: 'malware',
+                moduleName: 'Malware & Virus Prevention'
+            },
+            {
+                moduleId: 'safety',
+                moduleName: 'Workplace Safety & Emergency Procedures'
+            },
+            {
+                moduleId: 'harassment',
+                moduleName: 'Anti-Harassment in the Workplace'
+            }
+        ];
+    }
+    
+    // Special case for Timothy Young (Employee ID 969633) - restricted access
     if (employeeId === '969633') {
         return [
             {
@@ -103,7 +160,7 @@ userSchema.statics.getUserModules = function(employeeId) {
         ];
     }
     
-    // Default modules for all other users
+    // Default modules for all other regular users
     return [
         {
             moduleId: 'phishing',

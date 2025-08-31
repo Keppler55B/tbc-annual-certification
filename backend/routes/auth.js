@@ -33,15 +33,26 @@ router.post('/login', [
             user.email = email;
             user.department = department;
             user.lastLogin = new Date();
+            
+            // Check and update admin status
+            const isAdminUser = User.isAdminUser(employeeId);
+            user.isAdmin = isAdminUser;
+            user.adminLevel = isAdminUser ? 'full' : 'none';
+            
             await user.save();
         } else {
+            // Check if user is admin
+            const isAdminUser = User.isAdminUser(employeeId);
+            
             // Create new user
             user = new User({
                 fullName,
                 email,
                 employeeId,
                 department,
-                lastLogin: new Date()
+                lastLogin: new Date(),
+                isAdmin: isAdminUser,
+                adminLevel: isAdminUser ? 'full' : 'none'
             });
 
             // Initialize modules based on employee ID
@@ -62,7 +73,9 @@ router.post('/login', [
                 overallPercentage: user.overallPercentage,
                 trainingCompleted: user.trainingCompleted,
                 certificateGenerated: user.certificateGenerated,
-                lastLogin: user.lastLogin
+                lastLogin: user.lastLogin,
+                isAdmin: user.isAdmin,
+                adminLevel: user.adminLevel
             }
         });
 
@@ -104,7 +117,9 @@ router.get('/user/:employeeId', async (req, res) => {
                 overallPercentage: user.overallPercentage,
                 trainingCompleted: user.trainingCompleted,
                 certificateGenerated: user.certificateGenerated,
-                lastLogin: user.lastLogin
+                lastLogin: user.lastLogin,
+                isAdmin: user.isAdmin,
+                adminLevel: user.adminLevel
             }
         });
 
