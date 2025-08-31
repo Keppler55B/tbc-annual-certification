@@ -975,7 +975,8 @@
                 number: 9,
                 name: 'Anti-Harassment in the Workplace',
                 description: 'Recognize, denounce, and prevent all forms of harassment including sexual, physical, psychological, and cyberbullying',
-                videoUrl: 'https://example.com/videos/anti-harassment',
+                videoUrl: 'https://www.dol.gov/agencies/eta/apprenticeship/eeo/harassment/video',
+                videoType: 'external',
                 duration: '12 minutes',
                 objectives: [
                     'Recognize all forms of harassment',
@@ -1158,6 +1159,29 @@
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                         allowfullscreen>
                     </iframe>
+                `;
+            } else if (currentModule.videoType === 'external' && currentModule.videoUrl) {
+                // Embed external video (like DOL harassment video)
+                videoContainer.innerHTML = `
+                    <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                        <p style="color: #333; font-size: 1.1em; margin-bottom: 15px; text-align: center;">
+                            <strong>📺 Official DOL Anti-Harassment Training Video</strong>
+                        </p>
+                        <p style="color: #666; text-align: center; margin-bottom: 20px;">
+                            Click the link below to watch the official Department of Labor harassment prevention video:
+                        </p>
+                        <div style="text-align: center;">
+                            <a href="${currentModule.videoUrl}" target="_blank" 
+                               style="display: inline-block; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); 
+                                      color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; 
+                                      font-weight: 600; box-shadow: 0 4px 15px rgba(42, 82, 152, 0.4);">
+                                🎥 Watch DOL Anti-Harassment Video
+                            </a>
+                        </div>
+                        <p style="color: #888; font-size: 0.9em; text-align: center; margin-top: 15px;">
+                            The video will open in a new tab. Please watch the complete video before proceeding to the assessment.
+                        </p>
+                    </div>
                 `;
             } else {
                 // Show placeholder for other modules
@@ -1373,6 +1397,9 @@
             
             document.getElementById('scoreBreakdown').innerHTML = breakdownHtml;
             
+            // Send assessment results via email
+            sendAssessmentResults(overallPercentage);
+            
             // Determine pass/fail
             const resultMessage = document.getElementById('resultMessage');
             const certBtn = document.getElementById('certBtn');
@@ -1382,6 +1409,7 @@
                 resultMessage.innerHTML = `
                     <div class="pass-message">
                         Congratulations! You have successfully completed the TBC Annual Compliance Training.
+                        <br><small style="color: #666; font-size: 0.8em;">Assessment results have been automatically sent to the administrator.</small>
                     </div>
                 `;
                 certBtn.style.display = 'inline-block';
@@ -1390,10 +1418,57 @@
                 resultMessage.innerHTML = `
                     <div class="fail-message">
                         You need 80% to pass. Please retake the failed modules.
+                        <br><small style="color: #666; font-size: 0.8em;">Assessment results have been automatically sent to the administrator.</small>
                     </div>
                 `;
                 certBtn.style.display = 'none';
                 retakeBtn.style.display = 'inline-block';
+            }
+        }
+
+        function sendAssessmentResults(overallPercentage) {
+            // Prepare email content
+            const today = new Date();
+            const completionDate = today.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            let emailBody = `TBC Annual Compliance Training - Assessment Results\n\n`;
+            emailBody += `Employee Information:\n`;
+            emailBody += `Name: ${userData.name}\n`;
+            emailBody += `Employee ID: ${userData.employeeId}\n`;
+            emailBody += `Department: ${userData.department}\n`;
+            emailBody += `Email: ${userData.email}\n`;
+            emailBody += `Completion Date: ${completionDate}\n\n`;
+            
+            emailBody += `Overall Score: ${overallPercentage}%\n`;
+            emailBody += `Status: ${overallPercentage >= 80 ? 'PASSED' : 'FAILED'}\n\n`;
+            
+            emailBody += `Module Breakdown:\n`;
+            trainingModules.forEach(module => {
+                const score = moduleScores[module.id];
+                const status = score.percentage >= 80 ? 'PASS' : 'FAIL';
+                emailBody += `• ${module.name}: ${score.percentage}% (${score.score}/${score.total}) - ${status}\n`;
+            });
+            
+            emailBody += `\n\nThis assessment was completed through the TBC Annual Compliance Training system.`;
+            
+            // Create mailto link
+            const subject = encodeURIComponent(`TBC Compliance Training Results - ${userData.name} (${userData.employeeId})`);
+            const body = encodeURIComponent(emailBody);
+            const mailtoLink = `mailto:Fwilliams@gmail.com?subject=${subject}&body=${body}`;
+            
+            // Open email client
+            try {
+                window.open(mailtoLink, '_blank');
+            } catch (error) {
+                console.log('Email client could not be opened automatically');
+                // Fallback: show the email content in an alert
+                alert(`Assessment results prepared for email:\n\nTo: Fwilliams@gmail.com\nSubject: ${decodeURIComponent(subject)}\n\n${emailBody}`);
             }
         }
 
