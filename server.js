@@ -45,6 +45,16 @@ const errorHandler = (err, req, res, next) => {
     });
 };
 
+// Health check route
+app.get('/health', (req, res) => {
+    res.json({ 
+        status: 'OK', 
+        message: 'TBC Compliance Training Server is running',
+        timestamp: new Date().toISOString(),
+        mongodb: mongodbAvailable ? 'Connected' : 'Using in-memory storage'
+    });
+});
+
 // Routes
 app.use('/api/auth', require('./backend/routes/auth'));
 app.use('/api/users', require('./backend/routes/users'));
