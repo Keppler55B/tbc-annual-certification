@@ -115,11 +115,8 @@ const connectDB = async () => {
         console.log('Attempting to connect to MongoDB...');
 
         await mongoose.connect(mongoUri, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            serverSelectionTimeoutMS: process.env.NODE_ENV === 'production' ? 10000 : 5000,
-            connectTimeoutMS: 10000,
-            socketTimeoutMS: 45000,
+            serverSelectionTimeoutMS: 5000,
+            socketTimeoutMS: 10000,
         });
         console.log('MongoDB connected successfully');
         mongodbAvailable = true;
@@ -128,11 +125,7 @@ const connectDB = async () => {
         console.log('Falling back to in-memory storage');
         mongodbAvailable = false;
 
-        // In production, we might want to retry after a delay
-        if (process.env.NODE_ENV === 'production') {
-            console.log('Will retry MongoDB connection in 30 seconds...');
-            setTimeout(connectDB, 30000);
-        }
+        // Don't retry to avoid endless loops
     }
 };
 
