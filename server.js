@@ -47,12 +47,29 @@ const errorHandler = (err, req, res, next) => {
 
 // Health check route
 app.get('/health', (req, res) => {
-    res.json({ 
-        status: 'OK', 
+    res.status(200).json({
+        status: 'OK',
         message: 'TBC Compliance Training Server is running',
         timestamp: new Date().toISOString(),
-        mongodb: mongodbAvailable ? 'Connected' : 'Using in-memory storage'
+        mongodb: mongodbAvailable ? 'Connected' : 'Using in-memory storage',
+        environment: process.env.NODE_ENV || 'development',
+        port: process.env.PORT || 5000
     });
+});
+
+// Root health check for Railway
+app.get('/', (req, res) => {
+    // Check if this is a health check request
+    const userAgent = req.get('User-Agent') || '';
+    if (userAgent.includes('Railway') || userAgent.includes('health')) {
+        return res.status(200).json({
+            status: 'OK',
+            message: 'TBC Compliance Training Server is running',
+            timestamp: new Date().toISOString()
+        });
+    }
+    // Otherwise serve the frontend
+    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
 });
 
 // Test route first
@@ -79,25 +96,43 @@ try {
 // Global error handler middleware (must be after routes)
 app.use(errorHandler);
 
-// Serve frontend
+// Serve frontend for all other routes (except API routes)
 app.get('*', (req, res) => {
+    // Skip API routes
+    if (req.path.startsWith('/api/')) {
+        return res.status(404).json({
+            success: false,
+            message: 'API endpoint not found'
+        });
+    }
     res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
 });
 
 // MongoDB Connection
 const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/tbc-compliance', {
+        const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/tbc-compliance';
+        console.log('Attempting to connect to MongoDB...');
+
+        await mongoose.connect(mongoUri, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+            serverSelectionTimeoutMS: process.env.NODE_ENV === 'production' ? 10000 : 5000,
+            connectTimeoutMS: 10000,
+            socketTimeoutMS: 45000,
         });
         console.log('MongoDB connected successfully');
         mongodbAvailable = true;
     } catch (error) {
-        console.error('MongoDB connection failed, using in-memory storage for development');
+        console.error('MongoDB connection failed:', error.message);
+        console.log('Falling back to in-memory storage');
         mongodbAvailable = false;
-        // Don't retry immediately, just use in-memory storage
+
+        // In production, we might want to retry after a delay
+        if (process.env.NODE_ENV === 'production') {
+            console.log('Will retry MongoDB connection in 30 seconds...');
+            setTimeout(connectDB, 30000);
+        }
     }
 };
 
@@ -187,9 +222,36 @@ process.on('uncaughtException', (error) => {
 // Connect to database
 connectDB();
 
+// Startup verification
+console.log('Starting TBC Compliance Training Server...');
+console.log('Node version:', process.version);
+console.log('Environment:', process.env.NODE_ENV || 'development');
+console.log('Port:', process.env.PORT || 5000);
+
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+
+// Ensure the server starts properly
+const server = app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT}`);
     console.log(`Frontend available at http://localhost:${PORT}`);
     console.log('Application started successfully with improved error handling');
+    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`MongoDB status: ${mongodbAvailable ? 'Connected' : 'Using in-memory storage'}`);
+});
+
+// Handle server errors
+server.on('error', (error) => {
+    console.error('Server error:', error);
+    if (error.code === 'EADDRINUSE') {
+        console.log(`Port ${PORT} is already in use`);
+    }
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+    console.log('SIGTERM received, shutting down gracefully');
+    server.close(() => {
+        console.log('Process terminated');
+        process.exit(0);
+    });
 });
