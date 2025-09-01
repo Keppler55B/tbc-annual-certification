@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: tbc-compliance-training
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        fromService:
+          type: web
+          name: tbc-compliance-training
+          property: port
+    healthCheckPath: /health
