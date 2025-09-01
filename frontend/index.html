@@ -515,17 +515,17 @@
             <div class="welcome-section active" id="welcomeSection">
                 <h2>Welcome to TBC Annual Compliance Training</h2>
                 <p style="margin: 20px 0; color: #666; line-height: 1.6;">
-                    This comprehensive training program ensures all employees meet compliance obligations, understand security protocols, and maintain ethical standards. Complete all 9 core modules to receive your annual certification.
+                    This comprehensive training program ensures all employees meet compliance obligations, understand security protocols, and maintain ethical standards. Complete your assigned training modules to receive your annual certification.
                 </p>
                 
                 <div class="info-box">
                     <h3>Training Requirements:</h3>
                     <ul>
-                        <li>Complete all 9 core training modules</li>
-                        <li>Watch each training video (5-10 minutes per module)</li>
-                        <li>Pass brief assessments (1-5 questions per module)</li>
-                        <li>Achieve minimum 80% overall score</li>
-                        <li>Estimated total time: 60-90 minutes</li>
+                        <li>Complete only the training modules assigned to you based on your role or department</li>
+                        <li>Each module will include a short training video (2–10 minutes) or PowerPoint slides</li>
+                        <li>Pass brief assessments (1–5 questions per module)</li>
+                        <li>Achieve a minimum overall score of 80%</li>
+                        <li>Estimated total time will vary depending on your assigned modules, but typically ranges from 20–90 minutes</li>
                     </ul>
                 </div>
                 
@@ -711,7 +711,12 @@
         async function startTrainingProgram() {
             const name = document.getElementById('fullName').value.trim();
             const email = document.getElementById('email').value.trim();
-            const employeeId = document.getElementById('employeeId').value.trim();
+            let employeeId = document.getElementById('employeeId').value.trim();
+            
+            // Special handling for common username format
+            if (employeeId.toLowerCase() === 'timothyyoung') {
+                employeeId = '969633';
+            }
             const department = document.getElementById('department').value;
             
             if (!name || !email || !employeeId || !department) {
@@ -881,6 +886,40 @@
                         </div>
                         <p style="color: #888; font-size: 0.9em; text-align: center; margin-top: 15px;">
                             The video will open in a new tab. Please watch the complete video before proceeding to the assessment.
+                        </p>
+                    </div>
+                `;
+            } else if (currentModule.videoType === 'pdf' && currentModule.pdfUrl) {
+                // Embed PDF document
+                videoContainer.innerHTML = `
+                    <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                        <p style="color: #333; font-size: 1.1em; margin-bottom: 15px; text-align: center;">
+                            <strong>📄 ${currentModule.name} - Training Materials</strong>
+                        </p>
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <iframe 
+                                src="${currentModule.pdfUrl}" 
+                                width="100%" 
+                                height="500px" 
+                                style="border: 1px solid #ddd; border-radius: 8px;">
+                            </iframe>
+                        </div>
+                        <div style="text-align: center;">
+                            <a href="${currentModule.pdfUrl}" target="_blank" 
+                               style="display: inline-block; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); 
+                                      color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; 
+                                      font-weight: 600; box-shadow: 0 4px 15px rgba(42, 82, 152, 0.4); margin-right: 10px;">
+                                📄 Open PDF in New Tab
+                            </a>
+                            <a href="${currentModule.pdfUrl}" download 
+                               style="display: inline-block; background: linear-gradient(135deg, #28a745 0%, #20c997 100%); 
+                                      color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; 
+                                      font-weight: 600; box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);">
+                                💾 Download PDF
+                            </a>
+                        </div>
+                        <p style="color: #888; font-size: 0.9em; text-align: center; margin-top: 15px;">
+                            Please review the complete training materials before proceeding to the assessment.
                         </p>
                     </div>
                 `;

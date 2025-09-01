@@ -120,6 +120,10 @@ userSchema.statics.getUserModules = function(employeeId) {
                 moduleName: 'Data Protection & Privacy'
             },
             {
+                moduleId: 'finance',
+                moduleName: 'Church Ministry Finance Training'
+            },
+            {
                 moduleId: 'incident',
                 moduleName: 'Incident Reporting'
             },
@@ -173,6 +177,10 @@ userSchema.statics.getUserModules = function(employeeId) {
         {
             moduleId: 'data',
             moduleName: 'Data Protection & Privacy'
+        },
+        {
+            moduleId: 'finance',
+            moduleName: 'Church Ministry Finance Training'
         },
         {
             moduleId: 'incident',

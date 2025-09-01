@@ -7,7 +7,7 @@ const router = express.Router();
 // @desc    Authenticate user and get user data
 // @access  Public
 router.post('/login', [
-    body('fullName').notEmpty().withMessage('Full name is required'),
+    body('name').notEmpty().withMessage('Full name is required'),
     body('email').isEmail().withMessage('Please include a valid email'),
     body('employeeId').notEmpty().withMessage('Employee ID is required'),
     body('department').notEmpty().withMessage('Department is required')
@@ -22,7 +22,7 @@ router.post('/login', [
             });
         }
 
-        const { fullName, email, employeeId, department } = req.body;
+        const { name, email, employeeId, department } = req.body;
 
         let user;
 
@@ -33,7 +33,7 @@ router.post('/login', [
 
             if (user) {
                 // Update user information and last login
-                user.fullName = fullName;
+                user.fullName = name;
                 user.email = email;
                 user.department = department;
                 user.lastLogin = new Date();
@@ -50,7 +50,7 @@ router.post('/login', [
                 
                 // Create new user
                 user = new User({
-                    fullName,
+                    fullName: name,
                     email,
                     employeeId,
                     department,
@@ -70,7 +70,7 @@ router.post('/login', [
                 // Update existing user
                 const isAdminUser = User.isAdminUser(employeeId);
                 global.updateInMemoryUser(employeeId, {
-                    fullName,
+                    name,
                     email,
                     department,
                     lastLogin: new Date(),
@@ -82,7 +82,7 @@ router.post('/login', [
                 // Create new user in memory
                 const isAdminUser = User.isAdminUser(employeeId);
                 user = global.createInMemoryUser({
-                    fullName,
+                    name,
                     email,
                     employeeId,
                     department,

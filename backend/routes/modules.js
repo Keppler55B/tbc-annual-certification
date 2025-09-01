@@ -2,7 +2,7 @@ const express = require('express');
 const User = require('../models/User');
 const router = express.Router();
 
-// Training modules configuration (matches frontend)
+// Training modules configuration (complete set)
 const trainingModules = [
     {
         id: 'phishing',
@@ -70,56 +70,334 @@ const trainingModules = [
                     "Suspicious attachments or links"
                 ],
                 correct: 2
-            },
+            }
+        ]
+    },
+    {
+        id: 'password',
+        number: 2,
+        name: 'Password Security',
+        description: 'Best practices for creating, managing, and protecting strong passwords',
+        videoType: 'placeholder',
+        duration: '8 minutes',
+        objectives: [
+            'Create strong, unique passwords',
+            'Understand password manager benefits',
+            'Learn multi-factor authentication',
+            'Recognize password-related threats'
+        ],
+        questions: [
             {
-                question: "Spear phishing differs from regular phishing because it:",
+                question: "What makes a password strong?",
                 options: [
-                    "Uses more colorful graphics",
-                    "Targets specific individuals with personalized information",
-                    "Only happens on weekends",
-                    "Always includes malware attachments"
+                    "Using your birthday",
+                    "At least 12 characters with mixed case, numbers, and symbols",
+                    "Using common words",
+                    "Making it easy to remember"
                 ],
                 correct: 1
             },
             {
-                question: "Before entering sensitive information on a website, you should always check for:",
+                question: "How often should you change your passwords?",
                 options: [
-                    "Bright colors and animations",
-                    "HTTPS encryption (lock icon) and correct URL spelling",
-                    "Pop-up advertisements",
-                    "Social media sharing buttons"
+                    "Every day",
+                    "Only when compromised or required by policy",
+                    "Never",
+                    "Every week"
                 ],
                 correct: 1
             },
             {
-                question: "If you receive an email claiming to be from your bank asking for account verification, you should:",
+                question: "What is two-factor authentication?",
                 options: [
-                    "Provide the information immediately to avoid account closure",
-                    "Call the bank directly using the number on your bank card or statement",
-                    "Reply to the email asking for more details",
-                    "Forward it to friends to see if they got the same email"
+                    "Using two passwords",
+                    "An additional security layer beyond just a password",
+                    "Having two user accounts",
+                    "Using uppercase and lowercase letters"
+                ],
+                correct: 1
+            }
+        ]
+    },
+    {
+        id: 'data',
+        number: 3,
+        name: 'Data Protection & Privacy',
+        description: 'Safeguarding sensitive information and understanding privacy regulations',
+        videoType: 'placeholder',
+        duration: '12 minutes',
+        objectives: [
+            'Classify data sensitivity levels',
+            'Understand GDPR and privacy laws',
+            'Learn secure data handling',
+            'Practice data breach response'
+        ],
+        questions: [
+            {
+                question: "What is considered personally identifiable information (PII)?",
+                options: [
+                    "Only social security numbers",
+                    "Any information that can identify an individual",
+                    "Only credit card numbers",
+                    "Only addresses"
                 ],
                 correct: 1
             },
             {
-                question: "Which of the following is a common sign that an email attachment might be malicious?",
+                question: "How should sensitive data be transmitted?",
                 options: [
-                    "It's a PDF document",
-                    "It has an unusual file extension like .exe, .scr, or double extensions",
-                    "It's larger than 1MB in size",
-                    "It was sent during business hours"
+                    "Via regular email",
+                    "Using encrypted channels only",
+                    "Through social media",
+                    "Via text message"
+                ],
+                correct: 1
+            }
+        ]
+    },
+    {
+        id: 'finance',
+        number: 10,
+        name: 'Church Ministry Finance Training',
+        description: 'Equipping ministries for faithful financial stewardship and proper financial controls',
+        videoType: 'pdf',
+        pdfUrl: '/assets/TBC_Church_Ministry_Finance_Training.pdf',
+        duration: '15 minutes',
+        objectives: [
+            'Understand biblical principles for financial stewardship',
+            'Learn key roles in church finance management',
+            'Master budgeting basics for ministry operations',
+            'Implement proper record keeping and reporting procedures',
+            'Apply financial controls to reduce risk and ensure transparency'
+        ],
+        questions: [
+            {
+                question: "Why is regular financial reporting important in church ministry?",
+                options: [
+                    "It's required by law only",
+                    "To build trust, ensure transparency, and maintain accountability to the congregation",
+                    "Only the pastor needs to know financial details",
+                    "It's not really necessary if you trust the treasurer"
                 ],
                 correct: 1
             },
             {
-                question: "The best defense against phishing attacks includes:",
+                question: "Only one person should be responsible for handling all church finances.",
                 options: [
-                    "Only using Internet Explorer browser",
-                    "Employee training, email filters, and verification procedures",
-                    "Avoiding all email communication",
-                    "Using only company computers for personal email"
+                    "True",
+                    "False"
                 ],
                 correct: 1
+            },
+            {
+                question: "What document should track all income and expenses?",
+                options: [
+                    "A simple notebook",
+                    "Financial ledger or accounting system",
+                    "Bank statements only",
+                    "Memory and receipts"
+                ],
+                correct: 1
+            },
+            {
+                question: "Who is typically responsible for financial decisions in a church?",
+                options: [
+                    "Only the pastor",
+                    "The finance committee/treasurer",
+                    "Every church member",
+                    "The choir"
+                ],
+                correct: 1
+            },
+            {
+                question: "Name one control measure to reduce financial risk.",
+                options: [
+                    "Let one person handle everything for efficiency",
+                    "Segregation of duties, dual signatures, or regular audits",
+                    "Keep all financial information secret",
+                    "Only use cash transactions"
+                ],
+                correct: 1
+            }
+        ]
+    },
+    {
+        id: 'incident',
+        number: 4,
+        name: 'Incident Reporting',
+        description: 'How to properly report security incidents and breaches',
+        videoType: 'placeholder',
+        duration: '7 minutes',
+        objectives: [
+            'Recognize security incidents',
+            'Learn reporting procedures',
+            'Understand response timelines',
+            'Practice incident documentation'
+        ],
+        questions: [
+            {
+                question: "When should you report a security incident?",
+                options: [
+                    "Only if you're certain it's serious",
+                    "Immediately upon discovery",
+                    "After trying to fix it yourself",
+                    "Only during business hours"
+                ],
+                correct: 1
+            },
+            {
+                question: "What information should be included in an incident report?",
+                options: [
+                    "Only the time it occurred",
+                    "Who, what, when, where, and how",
+                    "Only your opinion of what happened",
+                    "Just the outcome"
+                ],
+                correct: 1
+            }
+        ]
+    },
+    {
+        id: 'internet',
+        number: 5,
+        name: 'Safe Internet Practices',
+        description: 'Guidelines for secure web browsing and online activities',
+        videoType: 'placeholder',
+        duration: '9 minutes',
+        objectives: [
+            'Identify unsafe websites',
+            'Understand download risks',
+            'Learn secure browsing habits',
+            'Recognize web-based threats'
+        ],
+        questions: [
+            {
+                question: "What indicates a secure website?",
+                options: [
+                    "Colorful design",
+                    "HTTPS and valid SSL certificate",
+                    "Many advertisements",
+                    "Social media links"
+                ],
+                correct: 1
+            },
+            {
+                question: "When downloading software, you should:",
+                options: [
+                    "Use any available download site",
+                    "Only download from official or trusted sources",
+                    "Always choose the fastest download",
+                    "Download everything to the desktop"
+                ],
+                correct: 1
+            }
+        ]
+    },
+    {
+        id: 'role',
+        number: 6,
+        name: 'Role-Specific Threat Awareness',
+        description: 'Understanding security threats specific to your job function',
+        videoType: 'placeholder',
+        duration: '11 minutes',
+        objectives: [
+            'Identify role-specific risks',
+            'Understand targeted attacks',
+            'Learn department-specific protocols',
+            'Practice threat scenarios'
+        ],
+        questions: [
+            {
+                question: "Role-specific security training is important because:",
+                options: [
+                    "All employees face identical threats",
+                    "Different roles have different risk profiles and access levels",
+                    "It's required by law",
+                    "It makes training more expensive"
+                ],
+                correct: 1
+            },
+            {
+                question: "If you handle financial data, you should be especially aware of:",
+                options: [
+                    "Only physical security",
+                    "Fraud attempts and financial scams",
+                    "Only password security",
+                    "Social media policies"
+                ],
+                correct: 1
+            }
+        ]
+    },
+    {
+        id: 'malware',
+        number: 7,
+        name: 'Malware & Virus Prevention',
+        description: 'Protecting systems from malicious software and viruses',
+        videoType: 'placeholder',
+        duration: '10 minutes',
+        objectives: [
+            'Recognize malware indicators',
+            'Understand prevention methods',
+            'Learn response procedures',
+            'Practice safe computing habits'
+        ],
+        questions: [
+            {
+                question: "Common signs of malware infection include:",
+                options: [
+                    "Faster computer performance",
+                    "Slow performance, pop-ups, and unexpected behavior",
+                    "Better internet connectivity",
+                    "Improved battery life"
+                ],
+                correct: 1
+            },
+            {
+                question: "The best malware prevention strategy includes:",
+                options: [
+                    "Only using antivirus software",
+                    "Regular updates, antivirus, and safe browsing habits",
+                    "Avoiding all internet use",
+                    "Only downloading from email"
+                ],
+                correct: 1
+            }
+        ]
+    },
+    {
+        id: 'safety',
+        number: 8,
+        name: 'Workplace Safety & Emergency Procedures',
+        description: 'Physical safety protocols and emergency response procedures',
+        videoType: 'placeholder',
+        duration: '15 minutes',
+        objectives: [
+            'Know evacuation procedures',
+            'Understand safety protocols',
+            'Learn emergency contacts',
+            'Practice safety scenarios'
+        ],
+        questions: [
+            {
+                question: "In case of a fire alarm, you should:",
+                options: [
+                    "Finish your current task first",
+                    "Immediately evacuate using designated routes",
+                    "Wait for further instructions",
+                    "Take the elevator to exit quickly"
+                ],
+                correct: 1
+            },
+            {
+                question: "Workplace safety is the responsibility of:",
+                options: [
+                    "Only the safety officer",
+                    "Only management",
+                    "Every employee",
+                    "Only security personnel"
+                ],
+                correct: 2
             }
         ]
     },
@@ -191,7 +469,6 @@ const trainingModules = [
             }
         ]
     }
-    // Note: Other modules would be defined here but are excluded for Timothy Young
 ];
 
 // @route   GET /api/modules/:employeeId
@@ -211,7 +488,15 @@ router.get('/:employeeId', async (req, res) => {
 
         // Get user progress if user exists
         let userProgress = null;
-        const user = await User.findOne({ employeeId });
+        let user = null;
+        
+        // Check if MongoDB is available
+        if (global.mongodbAvailable && global.mongodbAvailable()) {
+            user = await User.findOne({ employeeId });
+        } else {
+            user = global.findInMemoryUser(employeeId);
+        }
+        
         if (user) {
             userProgress = {
                 assignedModules: user.assignedModules,
@@ -268,7 +553,15 @@ router.get('/:employeeId/:moduleId', async (req, res) => {
 
         // Get user's progress for this module
         let moduleProgress = null;
-        const user = await User.findOne({ employeeId });
+        let user = null;
+        
+        // Check if MongoDB is available
+        if (global.mongodbAvailable && global.mongodbAvailable()) {
+            user = await User.findOne({ employeeId });
+        } else {
+            user = global.findInMemoryUser(employeeId);
+        }
+        
         if (user) {
             const userModule = user.assignedModules.find(m => m.moduleId === moduleId);
             if (userModule) {

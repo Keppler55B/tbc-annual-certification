@@ -96,7 +96,10 @@ const createInMemoryUser = (userData) => {
     const userId = Date.now().toString();
     const user = {
         _id: userId,
-        ...userData,
+        fullName: userData.name, // Correctly map name to fullName
+        email: userData.email,
+        employeeId: userData.employeeId,
+        department: userData.department,
         assignedModules: [],
         overallScore: 0,
         overallPercentage: 0,
