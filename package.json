@@ -9,6 +9,10 @@
     "frontend": "live-server frontend --port=3000",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
   "dependencies": {
     "express": "^4.18.2",
     "mongoose": "^7.5.0",
