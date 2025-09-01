@@ -77,6 +77,12 @@ app.get('/test', (req, res) => {
     res.json({ message: 'Server is working!', timestamp: new Date().toISOString() });
 });
 
+// Catch-all route for any unhandled requests
+app.get('*', (req, res) => {
+    // Serve the frontend for any unmatched routes
+    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+});
+
 // Routes - wrapped in try-catch to prevent crashes
 try {
     app.use('/api/auth', require('./backend/routes/auth'));
@@ -111,12 +117,16 @@ app.get('*', (req, res) => {
 // MongoDB Connection
 const connectDB = async () => {
     try {
-        const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/tbc-compliance';
-        console.log('Attempting to connect to MongoDB...');
+        if (!process.env.MONGODB_URI) {
+            console.log('No MONGODB_URI provided, using in-memory storage');
+            mongodbAvailable = false;
+            return;
+        }
 
-        await mongoose.connect(mongoUri, {
-            serverSelectionTimeoutMS: 5000,
-            socketTimeoutMS: 10000,
+        console.log('Attempting to connect to MongoDB...');
+        await mongoose.connect(process.env.MONGODB_URI, {
+            serverSelectionTimeoutMS: 3000,
+            socketTimeoutMS: 5000,
         });
         console.log('MongoDB connected successfully');
         mongodbAvailable = true;
@@ -129,21 +139,7 @@ const connectDB = async () => {
     }
 };
 
-// Handle MongoDB connection events
-mongoose.connection.on('connected', () => {
-    console.log('MongoDB connected');
-    mongodbAvailable = true;
-});
-
-mongoose.connection.on('error', (error) => {
-    console.error('MongoDB connection error:', error);
-    mongodbAvailable = false;
-});
-
-mongoose.connection.on('disconnected', () => {
-    console.log('MongoDB disconnected, switching to in-memory storage');
-    mongodbAvailable = false;
-});
+// MongoDB connection events removed to prevent crashes in production
 
 // In-memory storage helper functions
 const createInMemoryUser = (userData) => {
@@ -212,8 +208,11 @@ process.on('uncaughtException', (error) => {
     // Don't exit the process, just log the error
 });
 
-// Connect to database
-connectDB();
+// Connect to database safely
+connectDB().catch(error => {
+    console.log('Database connection failed, continuing with in-memory storage:', error.message);
+    mongodbAvailable = false;
+});
 
 // Startup verification
 console.log('Starting TBC Compliance Training Server...');
