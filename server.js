@@ -55,10 +55,26 @@ app.get('/health', (req, res) => {
     });
 });
 
-// Routes
-app.use('/api/auth', require('./backend/routes/auth'));
-app.use('/api/users', require('./backend/routes/users'));
-app.use('/api/modules', require('./backend/routes/modules'));
+// Test route first
+app.get('/test', (req, res) => {
+    res.json({ message: 'Server is working!', timestamp: new Date().toISOString() });
+});
+
+// Routes - wrapped in try-catch to prevent crashes
+try {
+    app.use('/api/auth', require('./backend/routes/auth'));
+    app.use('/api/users', require('./backend/routes/users'));
+    app.use('/api/modules', require('./backend/routes/modules'));
+} catch (error) {
+    console.error('Error loading routes:', error);
+    app.get('/api/*', (req, res) => {
+        res.status(500).json({ 
+            success: false, 
+            message: 'API routes failed to load',
+            error: error.message 
+        });
+    });
+}
 
 // Global error handler middleware (must be after routes)
 app.use(errorHandler);
