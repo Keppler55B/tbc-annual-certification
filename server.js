@@ -77,24 +77,23 @@ app.get('/test', (req, res) => {
     res.json({ message: 'Server is working!', timestamp: new Date().toISOString() });
 });
 
-// Catch-all route for any unhandled requests
-app.get('*', (req, res) => {
-    // Serve the frontend for any unmatched routes
-    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
-});
-
 // Routes - wrapped in try-catch to prevent crashes
 try {
+    console.log('Loading API routes...');
     app.use('/api/auth', require('./backend/routes/auth'));
+    console.log('Auth routes loaded');
     app.use('/api/users', require('./backend/routes/users'));
+    console.log('Users routes loaded');
     app.use('/api/modules', require('./backend/routes/modules'));
+    console.log('Modules routes loaded');
+    console.log('All API routes loaded successfully');
 } catch (error) {
     console.error('Error loading routes:', error);
     app.get('/api/*', (req, res) => {
-        res.status(500).json({ 
-            success: false, 
+        res.status(500).json({
+            success: false,
             message: 'API routes failed to load',
-            error: error.message 
+            error: error.message
         });
     });
 }

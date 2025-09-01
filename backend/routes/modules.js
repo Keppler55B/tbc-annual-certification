@@ -468,57 +468,97 @@ const trainingModules = [
                 correct: 3
             }
         ]
+    },
+    {
+        id: 'customer-service',
+        number: 11,
+        name: 'Customer Service & Hospitality In Ministry',
+        description: 'Excellence in customer service and hospitality for ministry environments',
+        videoType: 'pdf',
+        pdfUrl: '/assets/TBC_Customer_Service_Hospitality_Ministry.pdf',
+        duration: '15 minutes',
+        objectives: [
+            'Understand the importance of first impressions in ministry',
+            'Learn effective listening and complaint handling techniques',
+            'Master welcoming strategies for visitors and guests',
+            'Develop professional communication skills for ministry settings',
+            'Implement hospitality improvements in your ministry area'
+        ],
+        questions: [
+            {
+                question: "Why is the first impression important for church visitors?",
+                options: [
+                    "It doesn't really matter since they'll get to know us eventually",
+                    "It sets the tone for their entire experience and can influence their decision to return",
+                    "Only the pastor's impression matters",
+                    "First impressions are overrated in church settings"
+                ],
+                correct: 1
+            },
+            {
+                question: "Listening to a complaint is as important as solving it.",
+                options: [
+                    "True",
+                    "False"
+                ],
+                correct: 0
+            },
+            {
+                question: "What's a good way to make visitors feel welcome?",
+                options: [
+                    "Ignore them so they don't feel pressured",
+                    "Greet them warmly, offer assistance, and provide helpful information",
+                    "Only acknowledge them if they approach you first",
+                    "Point them to a seat and leave them alone"
+                ],
+                correct: 1
+            },
+            {
+                question: "If you don't know the answer to a visitor's question, you should:",
+                options: [
+                    "Ignore them",
+                    "Make something up",
+                    "Politely say you'll find out and follow up",
+                    "Ask them to leave"
+                ],
+                correct: 2
+            }
+        ]
     }
 ];
 
 // @route   GET /api/modules/:employeeId
-// @desc    Get modules assigned to a specific user
+// @desc    Get all assigned modules for a user
 // @access  Public
 router.get('/:employeeId', async (req, res) => {
     try {
         const { employeeId } = req.params;
 
-        // Get user-specific modules from the User model
+        // Get user's assigned modules
         const userModules = User.getUserModules(employeeId);
-        
-        // Filter training modules to only include assigned ones
-        const assignedTrainingModules = trainingModules.filter(module => 
-            userModules.some(userModule => userModule.moduleId === module.id)
-        );
 
-        // Get user progress if user exists
-        let userProgress = null;
-        let user = null;
-        
-        // Check if MongoDB is available
-        if (global.mongodbAvailable && global.mongodbAvailable()) {
-            user = await User.findOne({ employeeId });
-        } else {
-            user = global.findInMemoryUser(employeeId);
-        }
-        
-        if (user) {
-            userProgress = {
-                assignedModules: user.assignedModules,
-                overallScore: user.overallScore,
-                overallPercentage: user.overallPercentage,
-                trainingCompleted: user.trainingCompleted
+        // Get full module details for assigned modules
+        const assignedModules = userModules.map(userModule => {
+            const fullModule = trainingModules.find(module => module.id === userModule.moduleId);
+            return {
+                ...fullModule,
+                completed: userModule.completed,
+                score: userModule.score,
+                percentage: userModule.percentage,
+                totalQuestions: userModule.totalQuestions
             };
-        }
+        });
 
         res.json({
             success: true,
-            modules: assignedTrainingModules,
-            userProgress: userProgress,
-            totalModules: assignedTrainingModules.length,
-            specialUser: employeeId === '969633' ? 'Timothy Young - Limited Module Access' : null
+            modules: assignedModules
         });
 
     } catch (error) {
-        console.error('Get modules error:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'Server error retrieving modules' 
+        console.error('Get user modules error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Server error retrieving user modules'
         });
     }
 });
